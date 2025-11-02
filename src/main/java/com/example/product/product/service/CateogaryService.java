@@ -1,11 +1,13 @@
 package com.example.product.product.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import com.example.product.product.DTO.CateogaryDTO;
 import com.example.product.product.entity.Cateogary;
+import com.example.product.product.exception.CateogaryAlreadyExistsException;
 import com.example.product.product.mapper.CateogaryMapper;
 import com.example.product.product.repository.CateogaryRepository;
 
@@ -18,6 +20,11 @@ public class CateogaryService {
     private CateogaryRepository cateogaryRepository;
     //create cateogary
     public CateogaryDTO createCateogary(CateogaryDTO cateogaryDTO){
+
+        Optional<Cateogary> optionalCateogary = cateogaryRepository.findByName(cateogaryDTO.getName());
+        if(optionalCateogary.isPresent()){
+            throw new CateogaryAlreadyExistsException("cateogary " + cateogaryDTO.getName() + " already exists");
+        }
         Cateogary cateogary = CateogaryMapper.toCateogaryEntity(cateogaryDTO);
         cateogaryRepository.save(cateogary);
         return CateogaryMapper.toCateogaryDTO(cateogary);

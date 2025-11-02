@@ -1,0 +1,52 @@
+package com.example.product.product.exception;
+
+import java.time.LocalDateTime;
+
+import org.springframework.http.HttpStatus;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
+
+import com.example.product.product.DTO.ExceptionResponseDTO;
+
+@ControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(CateogaryAlreadyExistsException.class)
+    public ResponseEntity<ExceptionResponseDTO> handleCateogaryAlreadyExistsException(CateogaryAlreadyExistsException ex , WebRequest webRequest){
+
+        ExceptionResponseDTO exceptionResponseDTO = new ExceptionResponseDTO(
+            webRequest.getDescription(false),
+            HttpStatus.CONFLICT,
+            ex.getMessage(),
+            LocalDateTime.now()
+            );
+        return  ResponseEntity.status(HttpStatus.CONFLICT).body(exceptionResponseDTO);   
+    }
+
+    @ExceptionHandler(CateogaryNotFoundException.class)
+    public ResponseEntity<ExceptionResponseDTO> handleCategaoryNotFoundException(CateogaryNotFoundException ex , WebRequest webRequest){
+         ExceptionResponseDTO exceptionResponseDTO = new ExceptionResponseDTO(
+            webRequest.getDescription(false),
+            HttpStatus.NOT_FOUND,
+            ex.getMessage(),
+            LocalDateTime.now()
+            );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exceptionResponseDTO);
+    }
+
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ExceptionResponseDTO> handleGlobalException(Exception ex , WebRequest webRequest){
+         ExceptionResponseDTO exceptionResponseDTO = new ExceptionResponseDTO(
+            webRequest.getDescription(false),
+            HttpStatus.INTERNAL_SERVER_ERROR,
+            ex.getMessage(),
+            LocalDateTime.now()
+            );
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exceptionResponseDTO);
+    }
+
+}

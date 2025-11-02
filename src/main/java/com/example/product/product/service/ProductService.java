@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.example.product.product.DTO.ProductDTO;
 import com.example.product.product.entity.Cateogary;
 import com.example.product.product.entity.Product;
+import com.example.product.product.exception.CateogaryNotFoundException;
 import com.example.product.product.mapper.ProductMapper;
 import com.example.product.product.repository.CateogaryRepository;
 import com.example.product.product.repository.ProductRepository;
@@ -27,7 +28,7 @@ public class ProductService {
     //create product
     public ProductDTO createProduct(ProductDTO productDTO){
     Cateogary cateogary = cateogaryRepository.findById(productDTO.getCateogaryId())
-    .orElseThrow(()->new RuntimeException("cateogary not found"));
+    .orElseThrow(()->new CateogaryNotFoundException("cateogary Id " +productDTO.getCateogaryId()+" not found"));
 
     //DTO -> entity
     Product product = ProductMapper.toProductEntity(productDTO, cateogary);
