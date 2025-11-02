@@ -22,13 +22,22 @@ configurations {
 
 repositories {
 	mavenCentral()
+	
 }
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	// Embedded in-memory database for development and testing
-	runtimeOnly 'com.h2database:h2'
+
+	// OpenAPI documentation generation(Swagger UI)
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0'
+	
+
+    // Bean validation
+    implementation 'org.hibernate.validator:hibernate-validator:8.0.1.Final'
+
+	// // Embedded in-memory database for development and testing
+	// runtimeOnly 'com.h2database:h2'
  
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
